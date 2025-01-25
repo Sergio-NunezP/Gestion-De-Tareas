@@ -1,6 +1,7 @@
 import User from '../models/user.model.js'
 import bcrypt from 'bcryptjs'
 import { createAccessToken } from '../libs/jwt.js'
+import userModel from '../models/user.model.js'
 
 
 // REGISTRO DE USUARIO
@@ -74,10 +75,27 @@ export const login = async (req, res) => {
 }
 
 
-// Cancelar o Cerrar el TOKEN
+// Cancelar o Cerrar el TOKEN 
 export const logout = (req, res) => {
     res.cookie('token', "", {
         expires: new Date(0)
     })
     return res.sendStatus(200)
+}
+
+// Validar Token
+export const profile = async (req, res) => {
+    const userFound = await User.findById(req.user._id)
+
+    if (!userFound) return res.status(400).json({ message: "Usuario no encontrado" })
+
+    return res.json({
+        id: userFound._id,
+        username: userFound.username,
+        email: userFound.email,
+        createdAt: userFound.createdAt,
+        updatedAt: userFound.updatedAt
+    })
+
+    res.send('profile')
 }
