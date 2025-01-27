@@ -7,6 +7,7 @@ export const getTasks = async (req, res) => {
     res.json(tasks)
 }
 
+
 export const createTasks = async (req, res) => {
     const { title, description, date } = req.body
 
