@@ -1,0 +1,75 @@
+
+import React, { createContext, useState, useContext, useEffect } from "react";
+import { registerRequest, loginRequest } from '../api/auth'
+
+export const AuthContext = createContext()
+
+// Esto para: en lugar de estar importanto el AuthContext y el UseContex simplemente importamos el useAuth
+export const useAuth = () => {
+    const context = useContext(AuthContext)
+    if (!context) {
+        throw new Error('useAuth debería estar dentro de un AuthProvider')
+    }
+    return context
+}
+
+// Con el user, ya otras partes pueden leerlo
+export const AuthProvider = ({ children }) => {
+    //Acceso al usuario global
+    const [user, setUser] = useState(null)
+    // Si está autenticado
+    const [isAuthenticated, setIsAuthenticated] = useState(false)
+    // Errores
+    const [errors, setErrors] = useState([])
+
+    const signup = async (user) => {
+        try {
+            const res = await registerRequest(user)
+            console.log(res.data)
+            // Cuando se registre
+            setUser(res.data)
+            // si todo va bien marca "true"
+            setIsAuthenticated(true)
+        } catch (error) {
+            console.log(error.response)
+            setErrors(error.response.data)
+        }
+    }
+
+    const signin = async (user) => {
+        try {
+            const res = await loginRequest(user)
+            console.log(res)
+        } catch (error) {
+            if (Array.isArray(error.response.data)) {
+                return setErrors(error.response.data)
+            }
+            setErrors([error.response.data.message])
+        }
+    }
+
+
+    // SetTimeout para Errores
+    useEffect(() => {
+        if (errors.length > 0) {
+            const time = setTimeout(() => {
+                setErrors([])
+            }, 3000);
+            return () => clearTimeout(time)
+        }
+    }, [errors])
+
+
+    // Todos los componentes que estén dentro, van a poder llamar tanto el dato de usuario como la funcion signup
+    return (
+        <AuthContext.Provider value={{
+            signup,
+            signin,
+            user,
+            isAuthenticated,
+            errors
+        }}>
+            {children}
+        </AuthContext.Provider>
+    )
+}
