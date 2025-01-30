@@ -12,12 +12,14 @@ import TaskFormPage from './pages/TaskFormPage'
 import ProfilePage from './pages/ProfilePage'
 
 import ProtectedRoute from "./ProtectedRoute"
+import Navbar from "./components/Navbar"
 
 function App() {
     return (
         <AuthProvider>
             <TaskProvider>
                 <BrowserRouter>
+                    <Navbar />
                     <Routes>
                         <Route path="/" element={<HomePage />} />
                         <Route path="/login" element={<LoginPage />} />
