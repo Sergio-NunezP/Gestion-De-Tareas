@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useState } from 'react'
 import { useFormState } from 'react-hook-form'
-import { createTasksRequest, getTasksRequest } from '../api/tasks'
+import { createTasksRequest, getTasksRequest, deleteTaskRequest } from '../api/tasks'
 
 
 const TaskContext = createContext()
@@ -34,9 +34,26 @@ export function TaskProvider({ children }) {
         const res = await createTasksRequest(task)
         console.log(res)
     }
+
+    // Eliminar tarea
+    const deleteTask = async (id) => {
+        try {
+            const res = await deleteTaskRequest(id)
+            if (res.status === 204) setTasks(tasks.filter(task => task._id !== id))
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
     return (
         //Exportar el valor de las tareas
-        <TaskContext.Provider value={{ tasks, createTask, getTasks }}>
+        <TaskContext.Provider value={{
+            tasks,
+            createTask,
+            getTasks,
+            deleteTask
+        }}
+        >
             {children}
         </TaskContext.Provider>
     )
