@@ -65,6 +65,14 @@ export function TaskProvider({ children }) {
         }
     }
 
+    // Filtrar tareas por prioridad y estado
+    const filterTasks = (priority, status) => {
+        return tasks.filter(task =>
+            (priority ? task.priority === priority : true) &&
+            (status ? task.status === status : true)
+        )
+    }
+
 
     return (
         //Exportar el valor de las tareas
@@ -74,7 +82,8 @@ export function TaskProvider({ children }) {
             getTasks,
             deleteTask,
             getTask,
-            updateTask
+            updateTask,
+            filterTasks
         }}
         >
             {children}

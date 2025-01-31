@@ -33,7 +33,7 @@ function LoginPage() {
                         </div>
                     ))
                 }
-                <h1 className='text-2xl font-bold'>Acceso</h1>
+                <h1 className='text-2xl font-bold my-2'>Ingresar</h1>
 
                 <form onSubmit={onSubmit}>
                     <input type="email" {...register('email', { required: true })}
@@ -51,8 +51,10 @@ function LoginPage() {
                     {errors.password && (
                         <p className='text-red-500 font-bold'>Contraseña Requerida</p>
                     )}
-                    <button type='submit'>
-                        Acceder
+                    <button type='submit'
+                        className='bg-cyan-500 hover:bg-cyan-700 text-white font-bold px-3 py-1 rounded-md my-2'
+                    >
+                        Ingresar
                     </button>
                 </form>
 
