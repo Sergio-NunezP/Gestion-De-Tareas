@@ -2,6 +2,7 @@ import React from 'react'
 import { useTasks } from '../context/TasksContext'
 import { Link } from 'react-router-dom'
 
+
 function TaskCard({ task }) {
 
     const { deleteTask } = useTasks()
@@ -12,10 +13,14 @@ function TaskCard({ task }) {
                 <h1 className='text-2xl font-bold'>{task.title}</h1>
                 <div className='flex gap-x-2 items-center'>
 
-                    <button onClick={() => { deleteTask(task._id) }}>
+                    <button
+                        className='bg-red-400 hover:bg-red-500 text-white px-4 py-2 rounded-md'
+                        onClick={() => { deleteTask(task._id) }}>
                         Eliminar
                     </button>
-                    <Link to={`/tasks/${task._id}`}>Editar</Link>
+                    <Link to={`/tasks/${task._id}`}
+                        className='bg-indigo-500 hover:bg-indigo-600 text-white px-4 py-2 rounded-md'
+                    >Editar</Link>
                 </div>
             </header>
             <p className='text-slate-300'>{task.description}</p>
